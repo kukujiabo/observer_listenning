@@ -1,4 +1,4 @@
-var dataService = require('data');
+var dataService = require('./data');
 
 var temperature = require('../models/temperature')
 
