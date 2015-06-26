@@ -12,35 +12,92 @@ var UserSetting = require('../models/userSetting');
 
 var UserConfig = require('../models/userConfig');
 
+var UserExtInfo = require('../models/userExtInfo');
+
+var crypto = require('crypto');
+
+var Events = require('events');
+
+var PushManager = require('../lib/push');
+
+var t_data_ready = false;
+
+var h_data_ready = false;
+
+var pushEvent = new Events.EventEmitter();
+/*
+ * 发起推送事件
+ */
+var dataPush = function () {
+
+  if (t_data_ready && h_data_ready) {
+
+    t_data_ready = h_data_ready = false;
+
+    var tdata = dataPush.tmp.data;
+
+    var hdata = dataPush.humi.data;
+
+    var datetime = dataPush.datetime;
+
+    var uid = dataPush.user.id;
+
+    var cid = dataPush.userEx.ext_0;
+
+    console.log('push msg');
+
+    PushManager.singleDataPush(uid, cid, tdata, hdata, datetime);
+
+  }
+
+}
+
 /*
  * 存储数据
- *
  */
 var store = function (socket, data) {
 
+  var md5 = crypto.createHash('md5');
+
+  var date = new Date();
+
+  var datetime = date.getTime();
+
+  dataPush.datetime = datetime;
+
+  //Parser data.
   var infoObj = dataService(data);
 
   var temperature = infoObj.t;
 
   var humidity = infoObj.h;
 
-  var tmid = infoObj.tm;
-
-  var hmid = infoObj.hm;
+  var mid = infoObj.m;
 
   var token = infoObj.k;
 
-  Mechine.findById(hmid).then(function (mec) {
+  md5.update(infoObj.m + infoObj.k + datetime);
+
+  var seq = md5.digest('hex');
+
+
+  //Register temperature save ready.
+  pushEvent.on('t_store_ready', dataPush);
+
+  //Register humidity save ready.
+  pushEvent.on('h_store_ready', dataPush);
+
+  Mechine.findById(mid).then(function (mec) {
 
     User.findById(mec.uid).then(function (user) {
 
-      //if (token == user.remember_token) {
+      dataPush.user = user;
 
       if (true) {
         /*
          * 获取用户自定义的配置信息
          */
-        UserConfig.findAll({}).then(function (configs) {
+        UserConfig.findAll().then(function (configs) {
 
           var confs = {};
 
@@ -50,9 +107,18 @@ var store = function (socket, data) {
 
           }
 
-          storeTemp(temperature, user, tmid, confs);
+          /*
+           * 获取用户信息
+           */
+          UserExtInfo.findOne({ where: { user_id: user.id }}).then(function(userEx) {
 
-          storeHumi(humidity, user, hmid, confs);
+            dataPush.userEx = userEx;
+
+            storeTemp(temperature, seq, user, mec.id, datetime, confs);
+
+            storeHumi(humidity, seq, user, mec.id, datetime, confs);
+
+          });
 
         });
 
@@ -68,7 +134,10 @@ var store = function (socket, data) {
 
 };
 
-var storeTemp = function (data, user, mid, configs) {
+/*
+ * Store temperature.
+ */
+var storeTemp = function (data, seq, user, mid, datetime, configs) {
 
   var h_tem = configs.t_warning_high;
 
@@ -86,11 +155,11 @@ var storeTemp = function (data, user, mid, configs) {
 
   }
 
-  console.log(user.id);
-
   Temperature.create({
 
     data: data,
+
+    seq: seq,
 
     type_id: type_id,
 
@@ -98,13 +167,28 @@ var storeTemp = function (data, user, mid, configs) {
 
     mechine_id: mid,
 
-    type_id: 0
+    type_id: 0,
+
+    created_at: datetime,
+
+    updated_at: datetime
+
+  }).then(function (tmp) {
+
+    t_data_ready = true;
+
+    dataPush.tmp = tmp;
+
+    pushEvent.emit('t_store_ready');
 
   });
 
 };
 
-var storeHumi = function (data, user, mid, configs) {
+/*
+ * Store humidity.
+ */
+var storeHumi = function (data, seq, user, mid, datetime, configs) {
 
   var h_hum = configs.h_warning_high;
 
@@ -126,13 +210,27 @@ var storeHumi = function (data, user, mid, configs) {
 
     data: data,
 
+    seq: seq,
+
     type_id: type_id,
 
     user_id: user.id,
 
     mechine_id: mid,
 
-    type_id: 1
+    type_id: 1,
+
+    created_at: datetime,
+
+    updated_at: datetime
+
+  }).then(function (humi) {
+
+    h_data_ready = true;
+
+    dataPush.humi = humi;
+
+    pushEvent.emit('h_store_ready');
 
   });
 

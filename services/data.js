@@ -10,8 +10,6 @@ var data = function (dataString) {
 
     var tmp = array[i].split('=');
 
-    console.log(tmp);
-
     obj[tmp[0]] = tmp[1];
 
   }
