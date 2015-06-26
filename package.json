@@ -6,7 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "sequelize": "*"
+    "sequelize": "*",
+    "restler": "~3.2.2"
   }
-
 }

@@ -10,7 +10,13 @@ var Temperature = sequelize.define('Temperature', {
 
   type: Sequelize.INTEGER,
 
-  is_normal: Sequelize.INTEGER
+  is_normal: Sequelize.INTEGER,
+
+  seq: Sequelize.STRING,
+
+  created_at: Sequelize.DATE,
+
+  updated_at: Sequelize.DATE
 
 }, {
 
