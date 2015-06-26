@@ -16,6 +16,8 @@ net.createServer(function (socket) {
 
   socket.on('data', function (data) {
 
+    data = data.toString();
+
     var info = validate(data);
 
     if (!info) {
@@ -24,11 +26,13 @@ net.createServer(function (socket) {
 
     } else {
 
-      store(info);
+      store(socket, info);
 
       socket.write('success.');
 
     }
+
+    socket.write(data + ' arrived.');
 
   });
 
@@ -39,7 +43,7 @@ net.createServer(function (socket) {
 
   socket.on('close', function (data) {
 
-    socket.write('Server closed.');
+    //socket.write('Server closed.');
 
   });
 

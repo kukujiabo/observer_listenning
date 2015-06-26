@@ -1,0 +1,17 @@
+{
+
+  "api_key": "qxNOkmsp8pOHRfEnkGRKQ03O",
+
+  "secret_key": "HtedUDqrzw4A0osAj9Oimxbv2yvTpqbb",
+
+  "host": "http://api.tuisong.baidu.com/",
+
+  "base_path": "rest/3.0/",
+
+  "user_id": "6279699",
+
+  "single_path": "push/single_device",
+
+  "expires": "18000"
+
+}

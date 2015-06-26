@@ -1,6 +1,6 @@
 var validate = function (str) {
 
-  if (str.indexOf('info') == 0) {
+  if (str.indexOf('$info', 0) == 0) {
 
     return str.split('#')[1];
 

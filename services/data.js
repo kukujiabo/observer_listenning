@@ -4,9 +4,13 @@ var data = function (dataString) {
 
   var obj = {};
 
-  for (itm in array) {
+  var length = array.length;
 
-    var tmp = itm.split('=');
+  for (var i = 0; i < length; i++) {
+
+    var tmp = array[i].split('=');
+
+    console.log(tmp);
 
     obj[tmp[0]] = tmp[1];
 
