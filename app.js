@@ -21,8 +21,6 @@ net.createServer(function (socket) {
 
     data = data.toString();
 
-    console.log(data);
-
     /*
      * Check data formation.
      */
@@ -37,8 +35,6 @@ net.createServer(function (socket) {
       /*
        * Data acceptable.
        */
-      console.log(info);
-
       store(socket, info);
 
       socket.write('success.');

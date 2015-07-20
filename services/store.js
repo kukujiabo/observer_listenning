@@ -44,8 +44,6 @@ var dataPush = function () {
 
     var cid = dataPush.userEx.ext_0;
 
-    console.log('push msg');
-
     PushManager.singleDataPush(uid, cid, tdata, hdata, datetime);
 
   }
@@ -72,14 +70,13 @@ var store = function (socket, data) {
 
   var humidity = infoObj.h;
 
-  var mid = infoObj.m;
+  var code = infoObj.m;
 
-  var token = infoObj.k;
+  var mid = undefined;
 
   md5.update(infoObj.m + infoObj.k + datetime);
 
   var seq = md5.digest('hex');
-
 
   //Register temperature save ready.
   pushEvent.on('t_store_ready', dataPush);
@@ -87,7 +84,9 @@ var store = function (socket, data) {
   //Register humidity save ready.
   pushEvent.on('h_store_ready', dataPush);
 
-  Mechine.findById(mid).then(function (mec) {
+  Mechine.findOne({where : { mechine_code: code }}).then(function (mec) {
+
+    mid = mec.id;
 
     User.findById(mec.uid).then(function (user) {
 
