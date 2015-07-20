@@ -35,6 +35,8 @@ net.createServer(function (socket) {
       /*
        * Data acceptable.
        */
+      console.log(info);
+
       store(socket, info);
 
       socket.write('success.');
