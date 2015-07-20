@@ -21,8 +21,6 @@ net.createServer(function (socket) {
 
     data = data.toString();
 
-    console.log(data);
-
     /*
      * Check data formation.
      */

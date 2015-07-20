@@ -1,8 +1,8 @@
 var validate = function (str) {
 
-  if (str.indexOf('$info', 0) == 0) {
+  if (str.indexOf('AOSONG', 0) == 0) {
 
-    return str.split('#')[1];
+    return str.split('+');
 
   }
 

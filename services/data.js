@@ -1,18 +1,18 @@
-var data = function (dataString) {
-
-  var array = dataString.split('&');
+var data = function (dataArr) {
 
   var obj = {};
 
-  var length = array.length;
+  var t = dataArr[2];
 
-  for (var i = 0; i < length; i++) {
+  var h = dataArr[3];
 
-    var tmp = array[i].split('=');
+  var m = dataArr[10];
 
-    obj[tmp[0]] = tmp[1];
+  obj['t'] = t.substring(0, t.length - 1) + '.' + t.substring(t.length - 1);
 
-  }
+  obj['h'] = h.substring(0, h.length - 1) + '.' + h.substring(h.length - 1);
+
+  obj['m'] = m;
 
   return obj;
 
