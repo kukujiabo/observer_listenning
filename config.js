@@ -2,7 +2,7 @@ var config = {};
 
 config.user = 'root';
 
-config.password = 'quhezu.me';
+config.password = 'ZXC_123';
 
 config.database = 'observer';
 
