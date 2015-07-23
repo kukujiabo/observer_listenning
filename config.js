@@ -2,7 +2,7 @@ var config = {};
 
 config.user = 'root';
 
-config.password = 'ZXC_123';
+config.password = 'w061237';
 
 config.database = 'observer';
 
