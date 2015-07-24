@@ -25,6 +25,7 @@ var t_data_ready = false;
 var h_data_ready = false;
 
 var pushEvent = new Events.EventEmitter();
+
 /*
  * 发起推送事件
  */
@@ -88,7 +89,7 @@ var store = function (socket, data) {
 
     mid = mec.id;
 
-    User.findById(mec.uid).then(function (user) {
+    User.findOne({where : { id: mec.uid }}).then(function (user) {
 
       dataPush.user = user;
 
@@ -153,6 +154,8 @@ var storeTemp = function (data, seq, user, mid, datetime, configs) {
     type_id = 2;
 
   }
+
+  console.log(user);
 
   Temperature.create({
 
