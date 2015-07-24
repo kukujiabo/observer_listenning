@@ -10,6 +10,8 @@ var Humidity = sequelize.define('Humidity', {
 
   user_id: Sequelize.INTEGER,
 
+  mechine_id: Sequelize.INTEGER,
+
   type: Sequelize.INTEGER,
 
   is_normal: Sequelize.INTEGER,

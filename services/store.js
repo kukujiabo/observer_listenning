@@ -155,8 +155,6 @@ var storeTemp = function (data, seq, user, mid, datetime, configs) {
 
   }
 
-  console.log(user);
-
   Temperature.create({
 
     data: data,

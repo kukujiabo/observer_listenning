@@ -6,6 +6,8 @@
 
   "host": "http://api.tuisong.baidu.com/",
 
+  "hostname": "api.tuisong.baidu.com",
+
   "base_path": "rest/3.0/",
 
   "user_id": "6279699",
