@@ -4,7 +4,7 @@ var Sequelize = require('sequelize');
 
 var sequelize = new Sequelize(config.database, config.user, config.password, {
 
-  host: 'localhost',
+  host: config.host,
 
   dialects: 'mysql'|'mariadb'|'sqlite'|'postgres'|'mssql',
 

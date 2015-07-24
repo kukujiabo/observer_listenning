@@ -6,6 +6,6 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "sequelize": "*"
+    "sequelize": "2.0"
   }
 }
