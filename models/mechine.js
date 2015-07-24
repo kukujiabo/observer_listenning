@@ -12,7 +12,10 @@ var Mechine = sequelize.define('Mechine', {
 
   uid: Sequelize.INTEGER,
 
+  mechine_code: Sequelize.STRING,
+
   active: Sequelize.INTEGER
+
 
 }, {
 
